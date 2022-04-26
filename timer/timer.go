@@ -30,23 +30,25 @@ func New() {
 	window := a.NewWindow("Timer")
 
 	canvas := ui.NewCanvas()
-	canvas.Circle(130, 110)
-	canvas.Text("Start")
+	canvas.Circle(50, 110)
+	canvas.Text("Timer")
+
+	// init widget
+	widget := ui.NewWidget()
 
 	// set widgets
-	widget := ui.NewWidget()
-	widget.Select(TIMES)
-	widget.Text("Which minutes do you want to set the timer?")
-	widget.Button("Confirm", func() {
+	timeSelected := widget.Select(TIMES)
+	timeTxt := widget.Text("Which minutes do you want to set the timer?")
+	timeBtn := widget.Button("Confirm", func() {
 		if dialog != nil {
-			tp, err := time.ParseDuration(fmt.Sprintf("%sm", widget.Sl.Selected))
+			tp, err := time.ParseDuration(fmt.Sprintf("%sm", timeSelected.Selected))
 			if err != nil {
 				a.Notify(err.Error(), true)
 				return
 			}
 
 			go func() {
-				i, err := strconv.Atoi(widget.Sl.Selected)
+				i, err := strconv.Atoi(timeSelected.Selected)
 				if err != nil {
 					a.Notify(err.Error(), true)
 					return
@@ -71,11 +73,10 @@ func New() {
 		}
 	})
 
-	wdg := ui.NewContainer(widget.Txt, widget.Sl, widget.Btn)
-
-	// set dialog
+	// set initial dialog
+	wdg := ui.NewContainer(timeTxt, timeSelected, timeBtn)
 	dialog = ui.NewDialog("", "Cancel", wdg, window)
-	dialog.ResizeAndShow(500, 200)
+	dialog.ResizeAndShow(250, 300)
 
 	window.SetContent(ui.NewContainerWithoutLayout(canvas.C, canvas.T))
 

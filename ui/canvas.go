@@ -19,7 +19,7 @@ func NewCanvas() Canvas {
 func (c *Canvas) Text(title string) {
 	c.T = canvas.NewText(title, color.Black)
 	c.T.Move(fyne.Position{
-		X: 200,
+		X: 110,
 		Y: 200,
 	})
 	c.T.TextSize = 45
@@ -29,12 +29,6 @@ func (c *Canvas) Text(title string) {
 func (c *Canvas) Circle(x, y float32) {
 	c.C = canvas.NewCircle(color.Black)
 	c.C.Resize(fyne.NewSize(250, 250))
-
-	// c.circle.Move(fyne.Position{
-	//		X: 130,
-	//		Y: 110,
-	//	})
-
 	c.C.Move(fyne.Position{
 		X: x,
 		Y: y,

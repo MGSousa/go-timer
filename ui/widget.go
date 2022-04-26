@@ -5,23 +5,20 @@ import (
 )
 
 type Widget struct {
-	Txt *widget.Label
-	Btn *widget.Button
-	Sl  *widget.Select
 }
 
 func NewWidget() *Widget {
 	return &Widget{}
 }
 
-func (w *Widget) Text(label string) {
-	w.Txt = widget.NewLabel(label)
+func (w *Widget) Text(label string) *widget.Label {
+	return widget.NewLabel(label)
 }
 
-func (w *Widget) Button(label string, tapped func()) {
-	w.Btn = widget.NewButton(label, tapped)
+func (w *Widget) Button(label string, tapped func()) *widget.Button {
+	return widget.NewButton(label, tapped)
 }
 
-func (w *Widget) Select(choices []string) {
-	w.Sl = widget.NewSelect(choices, func(s string) {})
+func (w *Widget) Select(choices []string) *widget.Select {
+	return widget.NewSelect(choices, func(s string) {})
 }
