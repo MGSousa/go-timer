@@ -47,6 +47,11 @@ func New() {
 				return
 			}
 
+			// add animation for color gradient on circle
+			if err = canvas.NewAnimation(timeSelected.Selected); err != nil {
+				a.Notify(err.Error(), true)
+			}
+
 			go func() {
 				i, err := strconv.Atoi(timeSelected.Selected)
 				if err != nil {
@@ -79,9 +84,6 @@ func New() {
 	dialog.ResizeAndShow(250, 300)
 
 	window.SetContent(ui.NewContainerWithoutLayout(canvas.C, canvas.T))
-
-	// add animation for color gradient on circle
-	canvas.NewAnimation()
 
 	window.Resize(fyne.NewSize(500, 500))
 	window.SetPadded(false)

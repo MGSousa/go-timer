@@ -4,6 +4,7 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/canvas"
 	"image/color"
+	"strconv"
 	"time"
 )
 
@@ -35,12 +36,21 @@ func (c *Canvas) Circle(x, y float32) {
 	})
 }
 
-func (c *Canvas) NewAnimation() {
+func (c *Canvas) NewAnimation(duration string) error {
 	if c.C == nil {
-		return
+		return nil
 	}
-	canvas.NewColorRGBAAnimation(color.White, color.NRGBA{B: 0xff, A: 0xff}, time.Second*100, func(color color.Color) {
-		c.C.FillColor = color
-		canvas.Refresh(c.C)
-	}).Start()
+	d, err := strconv.Atoi(duration)
+	if err != nil {
+		return err
+	}
+	canvas.NewColorRGBAAnimation(
+		color.White, color.RGBA{
+			R: 255, G: 0, B: 0,
+		}, time.Second*time.Duration(d*60), func(color color.Color) {
+			c.C.FillColor = color
+			canvas.Refresh(c.C)
+		}).Start()
+
+	return nil
 }
