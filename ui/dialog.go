@@ -1,7 +1,6 @@
 package ui
 
 import (
-	"fmt"
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/dialog"
 )
@@ -12,9 +11,7 @@ type Dialog struct {
 
 func NewDialog(title, dismiss string, container *fyne.Container, window fyne.Window) *Dialog {
 	d := Dialog{dialog.NewCustom(title, dismiss, container, window)}
-	d.SetOnClosed(func() {
-		fmt.Println("closed")
-	})
+	d.SetOnClosed(func() {})
 	return &d
 }
 
