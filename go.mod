@@ -2,9 +2,7 @@ module go-timer
 
 go 1.18
 
-require (
-	fyne.io/fyne/v2 v2.1.4
-)
+require fyne.io/fyne/v2 v2.1.4
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
@@ -20,8 +18,8 @@ require (
 	github.com/stretchr/testify v1.7.1 // indirect
 	github.com/yuin/goldmark v1.4.10 // indirect
 	golang.org/x/image v0.0.0-20220302094943-723b81ca9867 // indirect
-	golang.org/x/net v0.0.0-20220225172249-27dd8689420f // indirect
-	golang.org/x/sys v0.0.0-20220317061510-51cd9980dadf // indirect
-	golang.org/x/text v0.3.7 // indirect
+	golang.org/x/net v0.33.0 // indirect
+	golang.org/x/sys v0.28.0 // indirect
+	golang.org/x/text v0.21.0 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 )
