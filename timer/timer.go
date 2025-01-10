@@ -2,10 +2,11 @@ package timer
 
 import (
 	"fmt"
-	"fyne.io/fyne/v2"
 	"go-timer/ui"
 	"strconv"
 	"time"
+
+	"fyne.io/fyne/v2"
 )
 
 type Countdown struct {
