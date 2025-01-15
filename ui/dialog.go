@@ -11,7 +11,6 @@ type Dialog struct {
 
 func NewDialog(title, dismiss string, container *fyne.Container, window fyne.Window) *Dialog {
 	d := Dialog{dialog.NewCustom(title, dismiss, container, window)}
-	d.SetOnClosed(func() {})
 	return &d
 }
 

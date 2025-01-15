@@ -44,13 +44,15 @@ func (c *Canvas) NewAnimation(duration string) error {
 	if err != nil {
 		return err
 	}
+
+	red := color.NRGBA{R: 0xff, A: 0xff}
+
 	canvas.NewColorRGBAAnimation(
-		color.White, color.RGBA{
-			R: 255, G: 0, B: 0,
-		}, time.Second*time.Duration(d*60), func(color color.Color) {
+		color.White, red, time.Second*time.Duration(d*60), func(color color.Color) {
 			c.C.FillColor = color
 			canvas.Refresh(c.C)
-		}).Start()
+		},
+	).Start()
 
 	return nil
 }

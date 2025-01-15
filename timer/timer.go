@@ -3,6 +3,7 @@ package timer
 import (
 	"fmt"
 	"go-timer/ui"
+
 	"strconv"
 	"time"
 
@@ -18,11 +19,21 @@ type Countdown struct {
 
 var (
 	dialog *ui.Dialog
-	TIMES  = []string{
+
+	TIMES = []string{
 		"1",
 		"2",
 		"5",
 		"10",
+		"Other times ...",
+	}
+	NOTIF = []string{
+		"0",
+		"10",
+		"20",
+		"30",
+		"40",
+		"50",
 	}
 )
 
@@ -38,27 +49,42 @@ func New() {
 	widget := ui.NewWidget()
 
 	// set widgets
+	timeTxt := widget.Text("Which time do you want to set the countdown?")
 	timeSelected := widget.Select(TIMES)
-	timeTxt := widget.Text("Which minutes do you want to set the timer?")
+	timeSelected.PlaceHolder = "(in minutes)"
+
+	notifyTxt := widget.Text("In which time do you want to be notified?")
+	notifySelected := widget.Select(NOTIF)
+	notifySelected.PlaceHolder = "(in percentage)"
+
 	timeBtn := widget.Button("Confirm", func() {
+		countdownTime := timeSelected.Selected
+		notifyTime := notifySelected.Selected
+
 		if dialog != nil {
-			tp, err := time.ParseDuration(fmt.Sprintf("%sm", timeSelected.Selected))
+			tp, err := time.ParseDuration(fmt.Sprintf("%sm", countdownTime))
 			if err != nil {
 				a.Notify(err.Error(), true)
 				return
 			}
 
 			// add animation for color gradient on circle
-			if err = canvas.NewAnimation(timeSelected.Selected); err != nil {
+			if err = canvas.NewAnimation(countdownTime); err != nil {
 				a.Notify(err.Error(), true)
 			}
 
-			go func() {
-				i, err := strconv.Atoi(timeSelected.Selected)
-				if err != nil {
-					a.Notify(err.Error(), true)
-					return
-				}
+			i, err := strconv.Atoi(countdownTime)
+			if err != nil {
+				a.Notify(err.Error(), true)
+				return
+			}
+			ntp, err := strconv.Atoi(notifyTime)
+			if err != nil {
+				a.Notify("Choose percentage of the time", true)
+				return
+			}
+
+			go func(i, ntp int) {
 				canvas.T.Text = fmt.Sprintf("%02d:59", i-1)
 				canvas.T.Refresh()
 
@@ -68,19 +94,23 @@ func New() {
 					canvas.T.Text = fmt.Sprintf("%02d:%02d", t.minute, t.second)
 					canvas.T.Refresh()
 
+					if int(float64(t.total)/float64(tp.Seconds())*100) == ntp && ntp != 0 {
+						a.Notify(fmt.Sprintf("Remaining %d%%, passed %s", ntp, canvas.T.Text), false)
+					}
+
 					if t.total <= 0 {
-						a.Notify("Countdown over!", false)
+						a.Notify(fmt.Sprintf("%sm Countdown finished!", countdownTime), false)
 						break
 					}
 				}
-			}()
+			}(i, ntp)
 
 			dialog.Hide()
 		}
 	})
 
 	// set initial dialog
-	wdg := ui.NewContainer(timeTxt, timeSelected, timeBtn)
+	wdg := ui.NewContainer(timeTxt, timeSelected, notifyTxt, notifySelected, timeBtn)
 	dialog = ui.NewDialog("", "Cancel", wdg, window)
 	dialog.ResizeAndShow(250, 300)
 
