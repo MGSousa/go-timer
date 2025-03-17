@@ -1,8 +1,9 @@
 module go-timer
 
 go 1.18
+toolchain go1.24.1
 
-require fyne.io/fyne/v2 v2.5.4
+require fyne.io/fyne/v2 v2.5.5
 
 require (
 	fyne.io/systray v1.11.0 // indirect
